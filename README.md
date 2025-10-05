@@ -107,4 +107,4 @@ If you use this code in your research, please cite the following paper:
 
 ## License
 
-This project is licensed under the terms of the license agreement. See `LICENSE` for more details.
+This project is licensed under the terms of the Creative Commons Attribution-NonCommercial 4.0 International Public license agreement. See `LICENSE` for more details.
