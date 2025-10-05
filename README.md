@@ -20,7 +20,7 @@ The models in this study were trained and evaluated on data from the Osteoarthri
 1.  **Clone the repository:**
 
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/denizlab/TKRRisk-Formulation.git
     cd TKRRisk-Formulation
     ```
 
