@@ -154,7 +154,7 @@ def main() -> None:
     else:
         result_path = args.result_path
 
-    csv_path = "/gpfs/data/denizlab/Users/hrr288/data/mri_reg_splits_1/"
+    csv_path = "../../csv_files/MRI/"
 
 
     if not os.path.exists(result_path):

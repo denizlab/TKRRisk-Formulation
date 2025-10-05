@@ -116,7 +116,7 @@ def main() -> None:
     fold = config.fold
     year = config.year
 
-    csv_path = "/gpfs/data/denizlab/Users/hrr288/data/mri_reg_splits_1/"
+    csv_path = "../../csv_files/MRI/"
 
 
 

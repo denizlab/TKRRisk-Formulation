@@ -15,6 +15,34 @@ The code is organized to facilitate the training and evaluation of various exper
 
 The models in this study were trained and evaluated on data from the Osteoarthritis Initiative (OAI) and the Multicenter Osteoarthritis Study (MOST) datasets.
 
+## Data Acquisition and Setup
+
+### Data Availability
+
+The datasets used in this research are publicly available but require applications for access.
+
+  * **Osteoarthritis Initiative (OAI):** OAI data (imaging and clinical) are distributed via the NIMH Data Archive (NDA). Access requires: (i) creating or linking an NDA account (eRA Commons / Login.gov / PIV/CAC); (ii) agreeing to the OAI data access terms within the NDA; and (iii) requesting the desired OAI collections through the NDA portal. Detailed instructions are provided on the NDA OAI access pages: [https://nda.nih.gov/oai](https://nda.nih.gov/oai)
+  * **Multicenter Osteoarthritis Study (MOST):** MOST data are available through the NIA Aging Research Biobank. Investigators create a Biobank account and submit a data request in accordance with the Biobank’s terms and conditions. Current distribution is through the Aging Research Biobank: [https://agingresearchbiobank.nia.nih.gov/](https://agingresearchbiobank.nia.nih.gov/)
+
+### Code and Data Setup
+
+**IMPORTANT:** Before running any scripts, you must update the hardcoded paths for the data and CSV files.
+
+        ```
+**Image Data Path Setup:** The path to the directory containing the HDF5 image files needs to be specified in the dataloader scripts.
+
+      * **Files to Modify:** `dataloader.py` and `XrayDataLoader.py` in **every** experiment sub-directory.
+      * **Action:** In the `__getitem__` method of the `Radiographloader` or `MRIloader` class, you must define the base path to your image data and prepend it to the filename that is read from the CSV.
+        ```python
+        # Example in a dataloader's __getitem__ method:
+        data_path = "/path/to/your/downloaded/hdf5_images/"
+        file_name = self.df.iloc[idx]['h5Name']
+        image_path = data_path + file_name
+
+        with h5py.File(image_path, 'r') as hf:
+            image = hf['image'][:]
+        ```
+
 ## Installation
 
 1.  **Clone the repository:**
@@ -31,65 +59,45 @@ The models in this study were trained and evaluated on data from the Osteoarthri
     pip install -r requirements.txt
     ```
 
-## Data (`csv_files`)
+## Training and Evaluation Workflow
 
-The `csv_files` directory contains the necessary data splits for running the experiments. It is organized by imaging modality (`Radiographs` and `MRI`) and then by cross-validation folds.
+The workflow is a two-step process:
 
-  * **Fold Structure**: The data is split into multiple folds for cross-validation (e.g., `Fold_1`, `Fold_2`, etc.). Each fold directory contains:
-
-      * `CV_1_train.csv`, `CV_1_val.csv`, etc.: Training and validation splits for each cross-validation run within a fold.
-      * `Fold_1_test.csv`: The test set for that specific fold.
-
-  * **CSV File Content**: Each CSV file contains metadata for the image dataset, including:
-
-      * `ID`: A unique identifier for the patient.
-      * `Label`: The ground truth label for TKR.
-      * `h5Name`: The filename of the corresponding image data, which is expected to be in HDF5 format.
-      * Time-based labels (e.g., `1yrLabel1`, `2yrLabel1`, `4yrLabel1`): These columns provide the specific labels for the different prediction time horizons.
-
-## Training and Evaluation
+1.  **Train the model** using `train.py`.
+2.  **Evaluate the trained model** on the test set (`OAI` or `MOST`) using `evaluate.py`.
 
 ### Configurations
 
-All experiments are managed through YAML configuration files located in the `configs` directory within each experiment's folder (e.g., `Radiograph/Baseline/configs/`). These files allow for easy modification of hyperparameters and settings for different experimental runs.
+All experiments are managed through YAML configuration files located in the `configs` directory within each experiment's folder (e.g., `Radiograph/Baseline/configs/`).
 
-Key parameters in the `config.py` and `*.yaml` files that you can modify include:
+### 1\. Training
 
-  * **`year`**: Sets the prediction time horizon (e.g., `1yr`, `2yr`, `4yr`).
-  * **`tl_model`**: Specifies the backbone model for feature extraction (e.g., `Resnet34`).
-  * **`learning_rate`, `batch_size`, `num_epoch`**: Standard training hyperparameters.
-  * **`gamma`, `margin`**: Hyperparameters specific to the progressive risk formulation loss functions.
-  * **`fold`**: Specifies which cross-validation fold to use for training and evaluation.
-
-### Training
-
-To train a model, navigate to the desired experiment directory and run the `train.py` script with the appropriate config file.
+Navigate to the desired experiment directory and run the `train.py` script with the appropriate config file. The script will save the best-performing model based on validation performance during the training run.
 
 **Sample Training Command:**
 
 ```bash
-# Navigate to the directory of the desired model and modality
 cd Radiograph/Baseline/
-
-# Run the training script, specifying the config file
 python3 train.py --config ./configs/config_1yr_1.yaml
 ```
 
-### Evaluation
+### 2\. Final Evaluation
 
-To evaluate a trained model, use the `evaluate.py` script. You will need to specify the config file used for training, the dataset, the metric, the data split, and the cross-validation fold number.
+Use the `evaluate.py` script to get the final performance of the best model saved from training on the unseen test data.
 
-**Sample Evaluation Command:**
+#### Evaluating on the OAI Test Set
 
 ```bash
-# Navigate to the directory of the model to evaluate
 cd Radiograph/Baseline/
-
-# Run the evaluation script with the desired parameters
-python3 evaluate.py --config ./configs/config_4yr_1.yaml --dataset MOST --metric auc --mode test --cv 6
+python3 evaluate.py --config ./configs/config_4yr_1.yaml --dataset OAI --metric auc --mode test --cv 6
 ```
 
-This command will evaluate the model trained with `config_4yr_1.yaml` on the 6th cross-validation fold of the MOST test set, reporting the AUC score.
+#### Evaluating on the MOST Test Set (External Validation)
+
+```bash
+cd Radiograph/Baseline/
+python3 evaluate.py --config ./configs/config_4yr_1.yaml --dataset MOST --metric auc --mode test --cv 6
+```
 
 ## Citation
 

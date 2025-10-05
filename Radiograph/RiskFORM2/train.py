@@ -108,7 +108,7 @@ def main() -> None:
     year = config.year
 
     imb_mode = config.imb_mode
-    csv_path = "/gpfs/data/denizlab/Users/hrr288/data/reg_splits/"
+    csv_path = "../../csv_files/Radiograph/"
 
 
     for cv in range(1,7):
