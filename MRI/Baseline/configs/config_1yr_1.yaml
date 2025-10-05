@@ -1,0 +1,16 @@
+tl_model: 'Resnet18'
+output_dim: 1
+hidden_dim: 512
+batch_size: 8
+margin: 2.0
+gamma: 1.0
+layer_dim: 1
+learning_rate: 0.0002
+num_epoch: 150
+dropout: 0.1
+weight_decay: 0.001
+types: "baseline"
+setting: 1
+pretrained: False
+fold: 1
+year: "1yr"

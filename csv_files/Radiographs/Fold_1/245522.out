@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@skygpu07>
+Subject: Job 245522: <python3 train.py --config ./configs/config_1.yaml> in cluster <SkynetCluster> Exited
+
+Job <python3 train.py --config ./configs/config_1.yaml> was submitted from host <skynet01> by user <hrr288> in cluster <SkynetCluster> at Fri Jul 15 17:23:19 2022
+Job was executed on host(s) <10*skygpu07>, in queue <normal>, as user <hrr288> in cluster <SkynetCluster> at Fri Jul 15 17:23:19 2022
+</home/hrr288> was used as the home directory.
+</gpfs/data/denizlab/Users/hrr288/data/reg_splits/Fold_1> was used as the working directory.
+Started at Fri Jul 15 17:23:19 2022
+Terminated at Fri Jul 15 17:23:52 2022
+Results reported at Fri Jul 15 17:23:52 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python3 train.py --config ./configs/config_1.yaml
+------------------------------------------------------------
+
+Exited with exit code 2.
+
+Resource usage summary:
+
+    CPU time :                                   0.13 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     20.00 GB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              1
+    Max Threads :                                3
+    Run time :                                   17 sec.
+    Turnaround time :                            33 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <245522.err> for stderr output of this job.
+
