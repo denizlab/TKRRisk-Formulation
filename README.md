@@ -28,7 +28,6 @@ The datasets used in this research are publicly available but require applicatio
 
 **IMPORTANT:** Before running any scripts, you must update the hardcoded paths for the data and CSV files.
 
-        ```
 **Image Data Path Setup:** The path to the directory containing the HDF5 image files needs to be specified in the dataloader scripts.
 
       * **Files to Modify:** `dataloader.py` and `XrayDataLoader.py` in **every** experiment sub-directory.
